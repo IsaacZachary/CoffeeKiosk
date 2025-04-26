@@ -1,12 +1,57 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import ProductCard from '@/components/ProductCard';
+import PaymentModal from '@/components/PaymentModal';
+import { coffees } from '@/data/coffees';
+import { Coffee } from '@/types';
 
 const Index = () => {
+  const [selectedCoffee, setSelectedCoffee] = useState<Coffee | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleBuyClick = (coffee: Coffee) => {
+    setSelectedCoffee(coffee);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Header />
+      
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-coffee-dark text-center">
+            Premium Coffee Selection
+          </h2>
+          <p className="text-gray-600 text-center mt-2 max-w-2xl mx-auto">
+            Choose from our curated selection of premium coffees and pay instantly with M-PESA
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {coffees.map((coffee) => (
+            <ProductCard 
+              key={coffee.id} 
+              coffee={coffee} 
+              onBuyClick={handleBuyClick}
+            />
+          ))}
+        </div>
+      </main>
+      
+      <Footer />
+      
+      <PaymentModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal} 
+        coffee={selectedCoffee} 
+      />
     </div>
   );
 };
