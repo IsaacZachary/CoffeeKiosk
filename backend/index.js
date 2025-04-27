@@ -249,8 +249,19 @@ app.get('/transactions', async (req, res) => {
             throw error;
         }
 
-        console.log('Found transactions:', transactions.length);
-        res.json(transactions);
+        // Format the transactions data
+        const formattedTransactions = transactions.map(transaction => ({
+            ...transaction,
+            created_at: new Date(transaction.created_at).toISOString(),
+            updated_at: new Date(transaction.updated_at).toISOString(),
+            transaction_date: transaction.transaction_date ? new Date(transaction.transaction_date).toISOString() : null,
+            phone_number: transaction.phone_number || '-',
+            receipt_number: transaction.receipt_number || '-',
+            amount: Number(transaction.amount)
+        }));
+
+        console.log('Found transactions:', formattedTransactions.length);
+        res.json(formattedTransactions);
     } catch (error) {
         console.error('Error fetching transactions:', error.message);
         res.status(500).json({ error: 'Failed to fetch transactions' });

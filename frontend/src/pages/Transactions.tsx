@@ -13,12 +13,12 @@ import { Badge } from '@/components/ui/badge';
 
 interface Transaction {
   _id: string;
-  phoneNumber: string;
+  phone_number: string;
   amount: number;
   status: 'pending' | 'success' | 'failed';
-  receiptNumber?: string;
-  transactionDate?: Date;
-  createdAt: Date;
+  receipt_number?: string;
+  transaction_date?: string;
+  created_at: string;
 }
 
 const Transactions = () => {
@@ -48,14 +48,20 @@ const Transactions = () => {
     fetchTransactions();
   }, [toast]);
 
-  const formatDate = (date: string | Date) => {
-    return new Date(date).toLocaleString('en-KE', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const formatDate = (date: string | null) => {
+    if (!date) return '-';
+    try {
+      return new Date(date).toLocaleString('en-KE', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '-';
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -95,8 +101,8 @@ const Transactions = () => {
           <TableBody>
             {transactions.map((transaction) => (
               <TableRow key={transaction._id}>
-                <TableCell>{formatDate(transaction.createdAt)}</TableCell>
-                <TableCell>{transaction.phoneNumber}</TableCell>
+                <TableCell>{formatDate(transaction.created_at)}</TableCell>
+                <TableCell>{transaction.phone_number}</TableCell>
                 <TableCell>KES {transaction.amount}</TableCell>
                 <TableCell>
                   <Badge className={getStatusColor(transaction.status)}>
@@ -104,7 +110,7 @@ const Transactions = () => {
                   </Badge>
                 </TableCell>
                 <TableCell>
-                  {transaction.receiptNumber || '-'}
+                  {transaction.receipt_number}
                 </TableCell>
               </TableRow>
             ))}
