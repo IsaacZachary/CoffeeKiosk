@@ -1,0 +1,16 @@
+.footer {
+  background-color: var(--card-background);
+  padding: 1.5rem 0;
+  margin-top: auto;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+} 
