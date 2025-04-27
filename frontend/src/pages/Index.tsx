@@ -1,7 +1,4 @@
-
 import React, { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import PaymentModal from '@/components/PaymentModal';
 import { coffees } from '@/data/coffees';
@@ -22,8 +19,6 @@ const Index = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
-      
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-coffee-dark text-center">
@@ -44,8 +39,6 @@ const Index = () => {
           ))}
         </div>
       </main>
-      
-      <Footer />
       
       <PaymentModal 
         isOpen={isModalOpen} 
