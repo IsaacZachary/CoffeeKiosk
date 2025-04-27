@@ -15,7 +15,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/coffeekio
 
 // CORS configuration
 const corsOptions = {
+<<<<<<< HEAD
   origin: ['http://localhost:5173', 'http://localhost:8080'], // Frontend URLs
+=======
+  origin: 'http://localhost:8080', // Frontend URL
+>>>>>>> 77e2a854d704cd344eb3813912d20493f73bbbbc
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -214,6 +218,7 @@ app.get('/payment/:checkoutRequestId', async (req, res) => {
     }
 });
 
+<<<<<<< HEAD
 // Get all transactions endpoint
 app.get('/transactions', async (req, res) => {
     try {
@@ -229,6 +234,8 @@ app.get('/transactions', async (req, res) => {
     }
 });
 
+=======
+>>>>>>> 77e2a854d704cd344eb3813912d20493f73bbbbc
 // Start server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

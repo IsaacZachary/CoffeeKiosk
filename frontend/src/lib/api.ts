@@ -43,6 +43,7 @@ export const initiatePayment = async (data: PaymentData): Promise<PaymentRespons
   }
 };
 
+<<<<<<< HEAD
 export const getTransactions = async () => {
   try {
     console.log('Fetching transactions from:', `${API_URL}/transactions`);
@@ -64,4 +65,6 @@ export const getTransactions = async () => {
   }
 };
 
+=======
+>>>>>>> 77e2a854d704cd344eb3813912d20493f73bbbbc
 export default api; 

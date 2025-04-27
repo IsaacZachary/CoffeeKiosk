@@ -8,14 +8,25 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@supabase/supabase-js": "^2.49.4",
     "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+=======
+    "express": "^4.18.2",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+>>>>>>> 77e2a854d704cd344eb3813912d20493f73bbbbc
     "mongoose": "^8.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
   }
+<<<<<<< HEAD
 }
+=======
+} 
+>>>>>>> 77e2a854d704cd344eb3813912d20493f73bbbbc
