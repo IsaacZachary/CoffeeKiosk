@@ -9,7 +9,11 @@ const port = process.env.PORT || 3000;
 
 // CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:8080'], // Frontend URLs
+  origin: [
+    'http://localhost:5173', 
+    'http://localhost:8080',
+    'https://coffee-kiosk-frontend.onrender.com'
+  ],
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
