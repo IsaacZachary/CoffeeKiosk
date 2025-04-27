@@ -26,7 +26,7 @@ services:
     name: coffee-kiosk-frontend
     env: node
     buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run preview -- --host 0.0.0.0 --port 5173
+    startCommand: cd frontend && npx serve dist -l $PORT
     envVars:
       - key: VITE_API_URL
         value: https://coffee-kiosk-api.onrender.com
