@@ -1,103 +1,115 @@
-<<<<<<< HEAD
-# Coffee Kiosk
+# Coffee Kiosk - M-PESA Payment Integration
 
-A full-stack application for managing a coffee kiosk with M-PESA payment integration.
+A Node.js-based API service for processing M-PESA payments with a modern frontend interface.
 
-## Project Structure
+## 🚀 Deployment
 
-```
-CoffeeKiosk/
-├── backend/           # Node.js API Service
-│   ├── index.js      # Main API implementation
-│   ├── package.json  # Backend dependencies
-│   └── .env          # Environment variables (create from .env.example)
-├── frontend/         # React Frontend Application
-│   ├── src/         # Source files
-│   ├── public/      # Static files
-│   └── package.json # Frontend dependencies
-└── docs/            # Documentation
-    ├── Backend - PRD.md
-    └── Frontend - PRD.md
-```
+### Prerequisites
+- Node.js (v16 or higher)
+- npm (v7 or higher)
+- Git
+- A Render.com account
 
-## Setup Instructions
+### Deployment Steps
 
-### Backend Setup
+1. **Prepare Your Environment**
+   ```bash
+   # Clone the repository
+   git clone <your-repository-url>
+   cd coffee-kiosk
 
-1. Navigate to the backend directory:
+   # Install dependencies
+   cd backend
+   npm install
+   cd ..
+   ```
+
+2. **Configure Environment Variables**
+   - Copy `.env.example` to `.env` in the backend directory
+   - Update the following variables in `.env`:
+     - `CONSUMER_KEY`
+     - `CONSUMER_SECRET`
+     - `PAYBILL`
+     - `PASSKEY`
+     - `CALLBACK_URL`
+     - `SUPABASE_URL`
+     - `SUPABASE_KEY`
+
+3. **Deploy to Render.com**
+   - Create a new Web Service on Render.com
+   - Connect your GitHub repository
+   - Configure the following settings:
+     - Build Command: `cd backend && npm install`
+     - Start Command: `cd backend && npm start`
+   - Add all environment variables from your `.env` file
+   - Deploy!
+
+4. **Update Callback URL**
+   - After deployment, update your `CALLBACK_URL` in the Render.com environment variables with your new API URL
+   - The format should be: `https://your-app-name.onrender.com/callback`
+
+### Local Development
+
+1. **Start the Backend**
    ```bash
    cd backend
-   ```
-
-2. Install dependencies:
-   ```bash
    npm install
-   ```
-
-3. Create a `.env` file with the following variables:
-   ```
-   CONSUMER_KEY=your_consumer_key_here
-   CONSUMER_SECRET=your_consumer_secret_here
-   PAYBILL=your_paybill_number_here
-   PASSKEY=your_passkey_here
-   CALLBACK_URL=https://your-ngrok-url.ngrok.io/callback
-   PORT=3000
-   ```
-
-4. Start the backend server:
-   ```bash
    npm start
    ```
 
-### Frontend Setup
-
-1. Navigate to the frontend directory:
+2. **Start the Frontend**
    ```bash
    cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
    npm install
+   npm run dev
    ```
 
-3. Start the development server:
-   ```bash
-   npm start
-   ```
+## 📝 API Documentation
 
-## Development
+### Endpoints
 
-- Backend runs on `http://localhost:3000`
-- Frontend runs on `http://localhost:3001`
-- Use Ngrok for exposing the backend callback URL
+#### POST /pay
+Initiates an M-PESA payment.
 
-## API Endpoints
+**Request Body:**
+```json
+{
+  "phone": "07XXXXXXXX",
+  "amount": 100
+}
+```
 
-### Backend
+**Response:**
+```json
+{
+  "message": "Payment request sent successfully",
+  "CheckoutRequestID": "ws_CO_12345"
+}
+```
 
-- `POST /pay` - Initiate M-PESA STK Push
-  ```json
-  {
-    "phone": "07XXXXXXXX",
-    "amount": 100
-  }
-  ```
+#### POST /callback
+Receives payment confirmation from M-PESA.
 
-- `POST /callback` - Receive M-PESA transaction callbacks
+## 🔒 Security
 
-## Technologies Used
+- All sensitive credentials are stored in environment variables
+- CORS is configured to only allow requests from trusted origins
+- Input validation is implemented for all endpoints
 
-### Backend
-- Node.js
-- Express.js
-- Axios
+## 📦 Dependencies
+
+- express
+- axios
 - dotenv
 - cors
+- @supabase/supabase-js
 
-### Frontend
-- React
-- Material-UI
-- Axios
-- React Router
-- Emotion (for styling) 
+## 🛠️ Development
+
+- Node.js >= 16.x
+- npm >= 7.x
+- Git
+
+## 📄 License
+
+MIT 

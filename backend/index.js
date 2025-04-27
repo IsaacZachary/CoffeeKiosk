@@ -2,16 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const mongoose = require('mongoose');
-const Payment = require('./models/Payment');
+const supabase = require('./lib/supabase');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/coffeekiosk')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
 
 // CORS configuration
 const corsOptions = {
@@ -129,15 +123,26 @@ app.post('/pay', async (req, res) => {
 
         console.log('STK Push response:', response.data);
 
-        // Save payment to database
-        const payment = new Payment({
-            phoneNumber: formattedPhone,
-            amount: amount,
-            checkoutRequestId: response.data.CheckoutRequestID,
-            status: 'pending'
-        });
-        await payment.save();
-        console.log('Payment saved to database:', payment);
+        // Save payment to Supabase
+        const { data: payment, error } = await supabase
+            .from('payments')
+            .insert([{
+                phone_number: formattedPhone,
+                amount: amount,
+                checkout_request_id: response.data.CheckoutRequestID,
+                status: 'pending',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            }])
+            .select()
+            .single();
+
+        if (error) {
+            console.error('Error saving payment to Supabase:', error);
+            throw new Error('Failed to save payment');
+        }
+
+        console.log('Payment saved to Supabase:', payment);
 
         res.json({
             message: 'Payment request sent successfully',
@@ -163,9 +168,14 @@ app.post('/callback', async (req, res) => {
         const stkCallback = callbackData.Body.stkCallback;
         const checkoutRequestId = stkCallback.CheckoutRequestID;
 
-        // Find and update payment in database
-        const payment = await Payment.findOne({ checkoutRequestId });
-        if (!payment) {
+        // Find payment in Supabase
+        const { data: payment, error: findError } = await supabase
+            .from('payments')
+            .select()
+            .eq('checkout_request_id', checkoutRequestId)
+            .single();
+
+        if (findError || !payment) {
             console.error('Payment not found:', checkoutRequestId);
             return res.status(404).send('Payment not found');
         }
@@ -174,22 +184,43 @@ app.post('/callback', async (req, res) => {
             const metadata = stkCallback.CallbackMetadata.Item;
             const transactionDetails = {
                 amount: metadata.find(item => item.Name === 'Amount')?.Value,
-                receiptNumber: metadata.find(item => item.Name === 'MpesaReceiptNumber')?.Value,
-                phoneNumber: metadata.find(item => item.Name === 'PhoneNumber')?.Value,
-                transactionDate: metadata.find(item => item.Name === 'TransactionDate')?.Value
+                receipt_number: metadata.find(item => item.Name === 'MpesaReceiptNumber')?.Value,
+                phone_number: metadata.find(item => item.Name === 'PhoneNumber')?.Value,
+                transaction_date: metadata.find(item => item.Name === 'TransactionDate')?.Value
             };
 
-            // Update payment status
-            payment.status = 'success';
-            payment.receiptNumber = transactionDetails.receiptNumber;
-            payment.transactionDate = new Date(transactionDetails.transactionDate);
-            await payment.save();
+            // Update payment in Supabase
+            const { error: updateError } = await supabase
+                .from('payments')
+                .update({
+                    status: 'success',
+                    receipt_number: transactionDetails.receipt_number,
+                    transaction_date: new Date(transactionDetails.transaction_date).toISOString(),
+                    updated_at: new Date().toISOString()
+                })
+                .eq('checkout_request_id', checkoutRequestId);
+
+            if (updateError) {
+                console.error('Error updating payment:', updateError);
+                throw new Error('Failed to update payment');
+            }
 
             console.log('Transaction successful:', transactionDetails);
         } else {
             // Update payment status to failed
-            payment.status = 'failed';
-            await payment.save();
+            const { error: updateError } = await supabase
+                .from('payments')
+                .update({
+                    status: 'failed',
+                    updated_at: new Date().toISOString()
+                })
+                .eq('checkout_request_id', checkoutRequestId);
+
+            if (updateError) {
+                console.error('Error updating payment:', updateError);
+                throw new Error('Failed to update payment');
+            }
+
             console.log('Transaction failed:', stkCallback.ResultDesc);
         }
 
@@ -200,27 +231,20 @@ app.post('/callback', async (req, res) => {
     }
 });
 
-// Get payment status endpoint
-app.get('/payment/:checkoutRequestId', async (req, res) => {
-    try {
-        const payment = await Payment.findOne({ checkoutRequestId: req.params.checkoutRequestId });
-        if (!payment) {
-            return res.status(404).json({ error: 'Payment not found' });
-        }
-        res.json(payment);
-    } catch (error) {
-        console.error('Error fetching payment:', error.message);
-        res.status(500).json({ error: 'Failed to fetch payment status' });
-    }
-});
-
 // Get all transactions endpoint
 app.get('/transactions', async (req, res) => {
     try {
         console.log('Fetching transactions...');
-        const transactions = await Payment.find()
-            .sort({ createdAt: -1 }) // Sort by newest first
-            .limit(50); // Limit to last 50 transactions
+        const { data: transactions, error } = await supabase
+            .from('payments')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+        if (error) {
+            throw error;
+        }
+
         console.log('Found transactions:', transactions.length);
         res.json(transactions);
     } catch (error) {

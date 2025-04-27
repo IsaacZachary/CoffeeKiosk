@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: coffee-kiosk-api
+    env: node
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: CONSUMER_KEY
+        sync: false
+      - key: CONSUMER_SECRET
+        sync: false
+      - key: PAYBILL
+        sync: false
+      - key: PASSKEY
+        sync: false
+      - key: CALLBACK_URL
+        sync: false
+      - key: PORT
+        value: 3000
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+
+  - type: web
+    name: coffee-kiosk-frontend
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm run preview -- --host 0.0.0.0 --port 5173
+    envVars:
+      - key: VITE_API_URL
+        value: https://coffee-kiosk-api.onrender.com
+      - key: PORT
+        value: 5173
+      - key: HOST
+        value: 0.0.0.0 
