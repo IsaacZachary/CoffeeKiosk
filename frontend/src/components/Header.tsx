@@ -15,13 +15,25 @@ const Header = () => {
             <h1 className="text-xl font-bold text-foreground">Coffee Kiosk</h1>
           </Link>
         </div>
-        <div className="flex items-center space-x-4">
-          <nav>
+        <div className="flex items-center space-x-6">
+          <nav className="flex items-center space-x-6">
+            <Link 
+              to="/" 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Home
+            </Link>
             <Link 
               to="/transactions" 
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               Transactions
+            </Link>
+            <Link 
+              to="/about" 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+            >
+              About
             </Link>
           </nav>
           <ThemeToggle />

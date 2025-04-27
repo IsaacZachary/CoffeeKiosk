@@ -1,5 +1,12 @@
 # ☕ Coffee Kiosk - M-PESA Payment Integration
 
+[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22.14.0-green.svg)](https://nodejs.org/)
+[![M-PESA](https://img.shields.io/badge/M--PESA-API-orange.svg)](https://developer.safaricom.co.ke/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Deployment](https://img.shields.io/badge/Deployment-Render-blue.svg)](https://render.com)
+
 A modern web application that combines the love for coffee with the convenience of M-PESA payments. Built with React, Node.js, and Safaricom's M-PESA API.
 
 ## 🌟 Live Demo
@@ -19,8 +26,10 @@ A modern web application that combines the love for coffee with the convenience 
 - **M-PESA Integration**: Seamless mobile payments using Safaricom's M-PESA
 - **Real-time Updates**: Instant payment status updates
 - **Transaction History**: View all your coffee purchases
-- **Kenyan Coffee Selection**: Featuring premium coffees from different regions
+- **Global Coffee Selection**: Featuring premium coffees from around the world
 - **Developer-Friendly**: Code-themed coffee descriptions
+- **Animations**: Smooth transitions and hover effects
+- **Accessibility**: WCAG 2.1 compliant
 
 ## 🛠️ Tech Stack
 
@@ -32,6 +41,7 @@ A modern web application that combines the love for coffee with the convenience 
 - Vite
 - React Router
 - Axios
+- Framer Motion
 
 ### Backend
 - Node.js
@@ -133,12 +143,17 @@ Retrieves transaction history.
 - All sensitive credentials are stored in environment variables
 - CORS is configured to only allow requests from trusted origins
 - Input validation is implemented for all endpoints
+- HTTPS enforced for all API calls
 
 ## 👨‍💻 Developer
 
 - **Name**: Isaac Zachary
 - **GitHub**: [@IsaacZachary](https://github.com/IsaacZachary)
 - **LinkedIn**: [Isaac Zachary](https://linkedin.com/in/isaaczachary)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 

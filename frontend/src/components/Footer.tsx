@@ -34,6 +34,11 @@ const Footer = () => {
                   Transactions
                 </Link>
               </li>
+              <li>
+                <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
+                  About
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -59,6 +64,14 @@ const Footer = () => {
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
+              </a>
+              <a
+                href="https://izach.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <span className="text-sm">Portfolio</span>
               </a>
             </div>
           </div>
