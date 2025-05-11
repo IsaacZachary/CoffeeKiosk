@@ -16,7 +16,7 @@ A modern web application that combines the love for coffee with the convenience 
 
 ## 📸 Screenshots
 
-![Home Page](docs/screenshots/Homepage.pdf)
+![Home Page](docs/screenshots/Homepage.JPG)
 ![Payment Modal](docs/screenshots/Payment.JPG)
 ![Transactions](docs/screenshots/Transactions.JPG)
 
